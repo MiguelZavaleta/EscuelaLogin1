@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_blue_500"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tcnm"
+        android:backgroundTint="@color/md_blue_200"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/itsh"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_margin="10dp"/>
+        <EditText
+            android:id="@+id/TxtCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_txt"
+            android:hint="Digita tu Vorreo Electronico"
+            android:textColorHint="@color/md_white_1000"
+            android:textSize="30dp"
+            android:layout_margin="10dp"
+            android:padding="10dp"/>
+        <EditText
+            android:id="@+id/Txtpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_txt"
+            android:textSize="30dp"
+            android:layout_margin="10dp"
+            android:hint="Digita tu Vorreo Electronico"
+            android:textColorHint="@color/md_white_1000"
+            android:padding="10dp"/>
+        <Button
+            android:id="@+id/btnIniciar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Iniciar Sesion"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="25dp"
+            android:textColor="@color/md_white_1000"
+            android:background="@drawable/boton"
+            android:elevation="5dp"
+            android:layout_marginTop="20dp"
+            android:onClick="Onclick"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="¿No tienes una?"
+            android:textAlignment="center"
+            android:textColorHint="@color/md_pink_A700"
+            android:textSize="30dp"
+            android:layout_margin="10dp"
+            android:padding="5dp" />
+        <Button
+            android:id="@+id/btnCrear"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Crear Una"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="25dp"
+            android:textColor="@color/md_white_1000"
+            android:background="@drawable/boton"
+            android:elevation="5dp"
+            android:layout_marginTop="20dp"
+            android:onClick="Onclick"
+
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
