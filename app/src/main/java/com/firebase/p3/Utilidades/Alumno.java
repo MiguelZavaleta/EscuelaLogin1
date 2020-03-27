@@ -1,5 +1,8 @@
 package com.firebase.p3.Utilidades;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Alumno {
     private String id,nombre, apellidos,curp,tel,correo,usuario,pass;
 
@@ -16,7 +19,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return "Nombre Alumno:" + nombre;
+        return "Nombre Alumno:" + getNombre();
     }
 
     public Alumno(){};
@@ -83,4 +86,19 @@ public class Alumno {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("ID",getId());
+        result.put("Nombre", getNombre());
+        result.put("Apellidos", getApellidos());
+        result.put("Curp", getCurp());
+        result.put("Telefono", getTel());
+        result.put("Correo", getCorreo());
+        result.put("Usuario", getUsuario());
+        result.put("Contra", getPass());
+
+        return result;
+    }
+
 }

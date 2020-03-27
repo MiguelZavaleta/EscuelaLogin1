@@ -12,7 +12,6 @@
     android:id="@+id/scroll"
     android:scrollbars="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -132,40 +131,7 @@
                 android:elevation="5dp"
                 android:onClick="Onclick"
                 android:background="@drawable/boton"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_gravity="center">
-            <Button
-                android:id="@+id/btnModificar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:text="Modificar"
-                android:drawableRight="@android:drawable/btn_star"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:textColor="@color/md_white_1000"
-                android:elevation="5dp"
-                android:background="@drawable/boton"
-                android:onClick="Onclick"/>
-            <Button
-                android:id="@+id/btnEliminar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:text="Eliminar"
-                android:drawableRight="@android:drawable/ic_menu_delete"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:textColor="@color/md_white_1000"
-                android:elevation="5dp"
-                android:background="@drawable/boton"
-                android:onClick="Onclick"/>
 
-        </LinearLayout>
 
     </LinearLayout>
 

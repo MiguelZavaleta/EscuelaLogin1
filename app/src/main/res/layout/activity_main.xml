@@ -38,7 +38,7 @@
             android:background="@drawable/edit_txt"
             android:textSize="30dp"
             android:layout_margin="10dp"
-            android:hint="Digita tu Vorreo Electronico"
+            android:hint="Digita tu contra"
             android:textColorHint="@color/md_white_1000"
             android:padding="10dp"/>
         <Button
