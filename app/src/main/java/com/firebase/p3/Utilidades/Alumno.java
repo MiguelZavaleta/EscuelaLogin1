@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Alumno {
-    private String id,nombre, apellidos,curp,tel,correo,usuario,pass;
 
-    public Alumno(String nombre, String apellidos, String curp, String tel, String correo, String usuario, String pass) {
+    private String id,nombre, apellidos,curp,tel,correo,usuario,pass;
+    public static String [] llaves={"ID","Nombre","Apellidos","Curp","Telefono","Correo","Usuario","Contra"};
+    public Alumno(String id,String nombre, String apellidos, String curp, String tel, String correo, String usuario, String pass) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -17,11 +18,15 @@ public class Alumno {
         this.pass = pass;
     }
 
-    @Override
-    public String toString() {
-        return "Nombre Alumno:" + getNombre();
-    }
-
+public String Imprimir(){
+        return getNombre()+"\n"
+                +getApellidos()+"\n"+
+    getCurp()+"\n"+
+    getTel()+"\n"+
+    getCorreo()+"\n"+
+    getUsuario()+"\n"+
+    getPass();
+}
     public Alumno(){};
     public String getId() {
         return id;
@@ -100,5 +105,46 @@ public class Alumno {
 
         return result;
     }
+public boolean ValidarCampos(){
+    Map<String, Object> Validar =toMap();
+    boolean bandera=false;
 
+    int i=1;
+    while(i<llaves.length-1){
+        if(!(Validar.get(llaves[i]).toString().trim()).isEmpty()){
+          bandera=true;
+
+        }else{
+            bandera=false;
+            System.out.println("<<CAMPO VACIO == "+llaves[i]);
+            break;
+                  }
+                i++;
+    }
+   /*if(ValidarCorreo(getCorreo())){
+        bandera=true;
+        System.out.println("Correo correcto");
+    }else{
+        bandera=false;
+        System.out.println("Correo InCorrecto");
+    }
+    if( ValidaTelefono(getTel())){
+        bandera=true;//ninguno esta vacio
+        System.out.println("Telefono Correcto");
+
+    }else{
+        bandera=false;
+        System.out.println("Telefono InCorrecto");
+
+    }*/
+    return bandera;
+}
+    public boolean ValidarCorreo(String val){
+        String Co="[a-zA-Z0-9]+[-_.]*[a-zA-Z0-9]+\\@[a-zA-Z]+\\.[a-zA-Z]+";
+        return (val.matches(Co)?true:false);
+    }
+    public  boolean ValidaTelefono(String num){
+        return(num.matches("(\\+?[0-9]{2,3}\\-)?([0-9]{10})")?true:false);
+
+    }
 }

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.firebase.p3"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 29
         multiDexEnabled true
         versionCode 1
@@ -27,10 +27,33 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.firebaseui:firebase-ui:1.0.1'
+
+    // FirebaseUI for Firebase Realtime Database
+    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
+
+    // FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
+
+    // FirebaseUI for Firebase Auth
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
+
+    // FirebaseUI for Cloud Storage
+    implementation 'com.firebaseui:firebase-ui-storage:6.2.1'
+
+    implementation "com.google.android.material:material:1.1.0-alpha02"
+
 
 }
