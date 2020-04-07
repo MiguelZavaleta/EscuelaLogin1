@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthException;
 
+import io.grpc.HandlerRegistry;
 import io.opencensus.internal.Utils;
 
 

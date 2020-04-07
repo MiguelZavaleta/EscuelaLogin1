@@ -121,22 +121,6 @@ public boolean ValidarCampos(){
                   }
                 i++;
     }
-   /*if(ValidarCorreo(getCorreo())){
-        bandera=true;
-        System.out.println("Correo correcto");
-    }else{
-        bandera=false;
-        System.out.println("Correo InCorrecto");
-    }
-    if( ValidaTelefono(getTel())){
-        bandera=true;//ninguno esta vacio
-        System.out.println("Telefono Correcto");
-
-    }else{
-        bandera=false;
-        System.out.println("Telefono InCorrecto");
-
-    }*/
     return bandera;
 }
     public boolean ValidarCorreo(String val){

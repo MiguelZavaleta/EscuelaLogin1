@@ -136,18 +136,4 @@
     </LinearLayout>
 
 </ScrollView>
-    <ListView
-
-        android:id="@+id/idListar"
-        android:layout_below="@id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/md_grey_300"
-        android:dividerHeight="2px"
-        android:textSize="30dp"
-
-
-        >
-
-    </ListView>
 </RelativeLayout>

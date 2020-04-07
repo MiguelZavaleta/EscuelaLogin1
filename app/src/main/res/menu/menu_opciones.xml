@@ -9,8 +9,5 @@
         android:icon="@drawable/ic_eliminar"
         android:title="Eliminar"
         app:showAsAction="always" />
-    <item android:id="@+id/icon_buscar"
-        android:icon="@drawable/ic_buscar"
-        android:title="Buscar"
-        app:showAsAction="always" />
+
 </menu>

@@ -46,7 +46,7 @@ public class Portal extends AppCompatActivity {
     AdapterModificar adaptador;
     RecyclerView recyclerUsuarios;
     AdaptadorUsuario miAdaptadorUsuario;
-    String ob = "";
+    int index=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +56,12 @@ public class Portal extends AppCompatActivity {
         simpleList = findViewById(R.id.list);
         recyclerUsuarios = findViewById(R.id.recyclerAvatarsId);
         utilidades.IniciarVariablesDB(this);
-        /*
-        utilidades.CargarInformacion();
-        utilidades.CargarUsuarios();*/
-
-
+        this.setTitle(utilidades.mAuth.getUid());
+        //Crear ListAdapter para modificar los datos del Usuario con la Sesion Iniciada
         adaptador = new AdapterModificar(this, Alumno.llaves.length - 1, idU, utilidades.DatosUsuario);
         simpleList.setAdapter(adaptador);
 
-        CargarRecyclerUsuarios();
-
+        CargarRecyclerUsuarios();//Creary llenar RecyclerView PAra Consultar Datos
     }
 
     @Override
@@ -79,14 +75,15 @@ public class Portal extends AppCompatActivity {
         recyclerUsuarios.setHasFixedSize(true);
 
         miAdaptadorUsuario = new AdaptadorUsuario(utilidades.Usuarios, this);
-      /*  miAdaptadorUsuario.setOnClickListener(new View.OnClickListener() {
+        miAdaptadorUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                index=recyclerUsuarios.getChildLayoutPosition(v);
                 utilidades.AlumnoSeleccionado = utilidades.Usuarios.get(recyclerUsuarios.getChildLayoutPosition(v));
-                txt.setText(utilidades.AlumnoSeleccionado.Imprimir());
-                Toast.makeText(Portal.this,   utilidades.AlumnoSeleccionado+"<<Seleccionaste: " + utilidades.AlumnoSeleccionado.getId(), Toast.LENGTH_SHORT).show();
+                txt.setText("Seleccionaste a: "+utilidades.AlumnoSeleccionado.getId());
+                Toast.makeText(Portal.this,   recyclerUsuarios.getChildLayoutPosition(v)+"<<Seleccionaste: " + utilidades.AlumnoSeleccionado.getId(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
         recyclerUsuarios.setAdapter(miAdaptadorUsuario);
 
     }
@@ -115,21 +112,22 @@ public class Portal extends AppCompatActivity {
                 Map<String, Object> MapaModificar = new HashMap<>();
                 AdapterModificar.objeto.setId(idU);
                 MapaModificar = AdapterModificar.objeto.toMap();
-
-                if (AdapterModificar.objeto.ValidarCampos() && AdapterModificar.pivote) {
+                //Preguntamos si Nuestros campos Estan Vacios y Nuestro datos son Correctos
+                if (AdapterModificar.objeto.ValidarCampos()
+                        && AdapterModificar.objeto.ValidaTelefono(AdapterModificar.objeto.getTel())) {
                     utilidades.DataB_Reference.child("Alumno").child(idU).updateChildren(MapaModificar).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                adaptador.notifyDataSetChanged();
                             }
                         }
                     });
                     Toast.makeText(Portal.this, "<<Cambiado Exitosamente",
                             Toast.LENGTH_SHORT).show();
                     miAdaptadorUsuario.notifyDataSetChanged();
-                } else {
+
+                } else {//si no Mandamos a verificar
                     adaptador.notifyDataSetChanged();
                     Toast.makeText(this, "Verifica tus datos", Toast.LENGTH_SHORT).show();
                 }
@@ -137,40 +135,18 @@ public class Portal extends AppCompatActivity {
                 break;
             case R.id.icon_eliminar:
                 final FirebaseAuth UsuarioEliminar = FirebaseAuth.getInstance();
-                if (AdaptadorUsuario.IndexEliminar != -1) {//Si Seleccionamos algo
-                    DialogoEliminar(UsuarioEliminar).show();
-                }else if(utilidades.AlumnoSeleccionado.equals(utilidades.mAuth.getUid())){//Comparamos si es nuestro propio Index
-                    DialogEliminaCuentaActiva(UsuarioEliminar).show();
+                if (index != -1 && !utilidades.AlumnoSeleccionado.getId().equals(utilidades.mAuth.getUid())) {//Si Seleccionamos algo
+                    DialogoEliminar(UsuarioEliminar).show();//Dialog 2 Opciones
+                }else if( index!=-1 && utilidades.AlumnoSeleccionado.getId().equals(utilidades.mAuth.getUid())){//Comparamos si es nuestro propio Index
+                    DialogEliminaCuentaActiva(UsuarioEliminar).show();//DialogEliminarCuenta
                 }
-                else{
+                else{//Si no Seleccionamos ningun elemento, cuando Carga la App
                         Toast.makeText(this, "Selecciona un Elemento del Recycler", Toast.LENGTH_SHORT).show();
                     }
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void EliminarCuenta(FirebaseAuth Usuario) {
-        Log.d("Error", "ingreso a deleteAccount");
-        final FirebaseUser currentUser = Usuario.getCurrentUser();
-        currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d("MensajeCorrecto", "OK! Works fine!");
-                    Toast.makeText(getApplicationContext(), "Eliminado", Toast.LENGTH_SHORT).show();
-                    utilidades.Usuarios.remove(AdaptadorUsuario.IndexEliminar);
-                    utilidades.DataB_Reference.child("Alumno").child(utilidades.AlumnoSeleccionado.getId()).removeValue();
-                    miAdaptadorUsuario.notifyDataSetChanged();
-                    AdaptadorUsuario.IndexEliminar = -1;
-
-
-                } else {
-                    Log.w("MensajeError", "Something is wrong!");
-                }
-            }
-        });
     }
 
     public AlertDialog DialogoEliminar(final FirebaseAuth UsuarioEliminar) {
@@ -181,10 +157,8 @@ public class Portal extends AppCompatActivity {
                 .setNegativeButton("Eliminar Mi Cuenta", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EliminarCuenta(utilidades.mAuth);
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }
+                        EliminarCuenta(UsuarioEliminar,true);
+                                    }
                 })
                 .setPositiveButton("Eliminar Cuenta Usuario", new DialogInterface.OnClickListener() {
                     @Override
@@ -193,7 +167,8 @@ public class Portal extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    EliminarCuenta(UsuarioEliminar);
+                                    EliminarCuenta(UsuarioEliminar,false);
+                                    txt.setText("Hola");
                                 } else {
                                     Toast.makeText(Portal.this, "Ocurrion un error de Autenticacion", Toast.LENGTH_SHORT).show();
                                 }
@@ -204,19 +179,49 @@ public class Portal extends AppCompatActivity {
         return builder.create();
     }
     public AlertDialog DialogEliminaCuentaActiva(final FirebaseAuth UsuarioEliminar) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Advertencia!!")
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setTitle("Advertencia!!")
                 .setMessage("Estas seguro de que Deseas Eliminar a " + utilidades.AlumnoSeleccionado.getNombre().toUpperCase()
                         + "y toda sun informacion?")
-                .setNegativeButton("Eliminar Mi Cuenta", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Eliminar Mi Cuenta", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EliminarCuenta(utilidades.mAuth);
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
+                        EliminarCuenta(UsuarioEliminar,true);
+
                     }
-                })
-              ;
-        return builder.create();
+                });
+        return builder2.create();
+    }
+    public void EliminarCuenta(final FirebaseAuth Usuario,final boolean ban) {
+        Log.d("Error", "ingreso a deleteAccount");
+        final FirebaseUser currentUser = Usuario.getCurrentUser();//Inicializamos la Variable recibida
+        currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {//Eliminamos en Autenticacion
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("MensajeCorrecto", "OK! Works fine!");
+                    Toast.makeText(getApplicationContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+                    utilidades.DataB_Reference.child("Alumno").child(utilidades.AlumnoSeleccionado.getId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        //Eliminamos del Relatime
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                if(ban==false){//Para Eliminar al Usuario sin Salir:
+                                    //Eliminamos otro usuario sin salir de nuestra sesion y Refrescamos El Adapter
+                                    miAdaptadorUsuario.notifyDataSetChanged();
+                                    index= -1;
+                                }else{//Validamos si Eliminamos en nuestra cuenta con sesion iniciada nuestro usuario Salimos al mainActivity
+                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                    finish();
+                                }
+
+                            }
+                        }
+                    });
+                } else {
+                    Log.w("MensajeError", "Something is wrong!");
+                }
+            }
+        });
     }
 }

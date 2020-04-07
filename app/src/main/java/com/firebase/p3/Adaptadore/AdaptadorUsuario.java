@@ -26,18 +26,20 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.View
     List<Alumno> ListaUsuario;
     View vista;
     Activity Actividad;
-    LinkedList <Alumno>lista;
-    public static int IndexEliminar=-1;
-    int posicionMarcada=0;
+    LinkedList<Alumno> lista;
+    public static int IndexEliminar = -1;
+    public static String Mensaje="";
+    int posicionMarcada = 0;
+
     public AdaptadorUsuario(List<Alumno> listaJugador, Activity ac) {
         this.ListaUsuario = listaJugador;
-        this.Actividad=ac;
+        this.Actividad = ac;
     }
 
     @NonNull
     @Override
     public ViewHolderJugador onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        vista= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list_usuario,viewGroup,false);
+        vista = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list_usuario, viewGroup, false);
         vista.setOnClickListener(this);
         return new ViewHolderJugador(vista);
     }
@@ -49,18 +51,6 @@ public class AdaptadorUsuario extends RecyclerView.Adapter<AdaptadorUsuario.View
         viewHolderJugador.imgAvatar.setImageResource(R.drawable.birrete);
         viewHolderJugador.txtNombre.setText(ListaUsuario.get(i).getId());//correo del usuario
         viewHolderJugador.txtGenero.setText(ListaUsuario.get(i).getCorreo());
-
-viewHolderJugador.cardAvatar.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        IndexEliminar=pos;
-
-        utilidades.AlumnoSeleccionado = utilidades.Usuarios.get(IndexEliminar);
-        Toast.makeText(Actividad, "Tocado"+IndexEliminar
-                +"\nY el Id es:"+utilidades.AlumnoSeleccionado.getId(), Toast.LENGTH_SHORT).show();
-       // notifyDataSetChanged();
-    }
-});
     }
 
     public void setOnClickListener(View.OnClickListener listener) {
@@ -74,7 +64,7 @@ viewHolderJugador.cardAvatar.setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void onClick(View view) {
-        if(listener!=null){
+        if (listener != null) {
             listener.onClick(view);
         }
     }
@@ -87,10 +77,10 @@ viewHolderJugador.cardAvatar.setOnClickListener(new View.OnClickListener() {
 
         public ViewHolderJugador(@NonNull View itemView) {
             super(itemView);
-            imgAvatar=itemView.findViewById(R.id.idAvatar);
-            txtNombre=itemView.findViewById(R.id.idNombre);
-            txtGenero=itemView.findViewById(R.id.idDes);
-            cardAvatar=itemView.findViewById(R.id.cardAvatar);
+            imgAvatar = itemView.findViewById(R.id.idAvatar);
+            txtNombre = itemView.findViewById(R.id.idNombre);
+            txtGenero = itemView.findViewById(R.id.idDes);
+            cardAvatar = itemView.findViewById(R.id.cardAvatar);
         }
 
     }

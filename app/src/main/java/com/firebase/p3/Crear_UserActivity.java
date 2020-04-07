@@ -71,14 +71,17 @@ public class Crear_UserActivity extends AppCompatActivity {
 
     public void RegistrarUsuarioMap() {//Metodo para Crear el Mapa con Objetos y validar
         CargarObjeto();//cargamos nuestro objeto
+        //La siguiente Linea Mediante Nuestra Variable detipo FirebaseAuth, autentica el correo y la contrase;a
+        //si nuestro usuario existe o no y si ambos parametros estan correctos, y con el addOnComplete nos Aseguramos de proceder
         utilidades.mAuth.createUserWithEmailAndPassword(Alumno.getCorreo(), Alumno.getPass()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful()) {//si la Operacion de registro en autenticacion es exitosa Cremos nuestro Mapa
                     Map<String, Object> MapaUsuarios = new HashMap<>();
                     String id = utilidades.mAuth.getCurrentUser().getUid();
-                    Alumno.setId(id);
+                    Alumno.setId(id);//Asignamos Id
                     MapaUsuarios = Alumno.toMap();
+                    //La siguiente Linea Manda a Guardar los Datos ala Base Relatime Mediante Nuesto Mapa Creado
                     utilidades.DataB_Reference.child("Alumno").child(id).setValue(MapaUsuarios).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task2) {

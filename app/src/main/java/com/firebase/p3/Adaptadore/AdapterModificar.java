@@ -21,26 +21,30 @@ import java.util.List;
 import java.util.Map;
 
 public class AdapterModificar extends BaseAdapter {
-    public static List<String>Respuestas;
+    public static List<String> Respuestas;
     public static Alumno objeto;
     public static boolean pivote;
-    int longitud=0;
+    int longitud = 0;
     TextView llave;
     EditText Campo;
-    LayoutInflater inflter; Activity actividad;View vista;
+    LayoutInflater inflter;
+    Activity actividad;
+    View vista;
     String id;
-    public AdapterModificar(Activity act,int l,String id,List<String> Array){
-        this.Respuestas=Array;
-        this.id=id;
-        this.longitud=l;
-        this.actividad=act;
+
+    public AdapterModificar(Activity act, int l, String id, List<String> Array) {
+        this.Respuestas = Array;
+        this.id = id;
+        this.longitud = l;
+        this.actividad = act;
         inflter = (LayoutInflater.from(actividad));
         notifyDataSetChanged();
 
     }
+
     @Override
     public int getCount() {
-         return longitud;
+        return longitud;
     }
 
     @Override
@@ -59,13 +63,14 @@ public class AdapterModificar extends BaseAdapter {
         final int pos = position;//iterador de poscision
         llave = (TextView) vista.findViewById(R.id.idLLave);//declaramos campos de row.xml
         Campo = (EditText) vista.findViewById(R.id.idCampo);
-        llave.setText(Alumno.llaves[pos+1]);//obtenemos el texto
+        llave.setText(Alumno.llaves[pos + 1]);//obtenemos el texto
         Campo.setText(Respuestas.get(pos));
         Campo.setSelection(Campo.length());//
-        if(llave.getText().toString().equalsIgnoreCase("correo")){
+        if (llave.getText().toString().equalsIgnoreCase("correo")) {//bloqueamos el Campo Correo Electronico para que no se pueda Modificar
             Campo.setEnabled(false);
             Campo.setBackgroundColor(vista.getResources().getColor(R.color.md_red_100));
         }
+        //Evento de detecrtar Caracteres en nuestra Caja de Texto:
         Campo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,62 +80,54 @@ public class AdapterModificar extends BaseAdapter {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {//evento mientras escribimos
-                System.out.println("Durante>>" + s.toString() + " " + start + " " + count);
-                Respuestas.set(pos, s.toString());
-                CargarObjeto();
-
+                // System.out.println("Durante>>" + s.toString() + " " + start + " " + count);
+                Respuestas.set(pos, s.toString());//cada que escribimos vamos modificando kla poscision del elemento
+                CargarObjeto();//carga,mos el objeto
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-               // System.out.println(pos + "Despues de>>" + s.toString());
+                // System.out.println(pos + "Despues de>>" + s.toString());
                 /*Respuestas.set(pos,s.toString());
                 CargarObjeto();/*/
-
             }
 
         });
-
-
         CargarObjeto();
-        Alerta(pos,Respuestas.get(pos));
-
-
-        System.out.println("Indice=="+pos);
-
+        Alerta(pos, Respuestas.get(pos));
         return vista;
     }
-void Alerta(int x,String s){
-    switch (x){
-        case 3:
 
-                if(!objeto.ValidaTelefono(s)){
-                    System.out.println("Valor "+ pivote);
+    void Alerta(int x, String s) {//alertas de campos incorrectos
+        switch (x) {
+            case 3:
+
+                if (!objeto.ValidaTelefono(s)) {
+                    System.out.println("Valor " + pivote);
                     Campo.setError("Telefono incorrecto");
                     Campo.requestFocus();
-                    pivote=false;
-                }else{
-                    pivote=true;
+                    pivote = objeto.ValidaTelefono(s);
+                } else {
+                    pivote = objeto.ValidaTelefono(s);
+                }
+                break;
+            case 4:
+                if (!objeto.ValidarCorreo(s)) {
+                    System.out.println("Valor " + pivote);
+                    Campo.setError("Correo incorrecto");
+                    Campo.requestFocus();
+                    pivote = false;
+                } else {
+                    pivote = true;
                 }
 
-
-            break;
-        case 4:
-            if(!objeto.ValidarCorreo(s)){
-                System.out.println("Valor "+ pivote);
-                Campo.setError("Correo incorrecto");
-                Campo.requestFocus();
-                pivote=false;
-            }else{
-                pivote=true;
-            }
-
-            break;
+                break;
+        }
     }
-}
-    void CargarObjeto(){
-        objeto=new Alumno();
+
+    void CargarObjeto() {
+        objeto = new Alumno();
         objeto.setNombre(Respuestas.get(0));
         objeto.setApellidos(Respuestas.get(1));
         objeto.setCurp(Respuestas.get(2));
